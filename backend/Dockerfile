@@ -75,4 +75,5 @@ RUN python manage.py collectstatic --noinput --clear
 EXPOSE $PORT
 
 # Comando de inicio con Gunicorn
-CMD ["/bin/bash", "/app/entrypoint.sh"]
+CMD sh /app/entrypoint.sh
+
