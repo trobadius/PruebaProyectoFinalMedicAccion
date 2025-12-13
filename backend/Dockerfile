@@ -76,4 +76,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8000/api/', timeout=5)" || exit 1
 
 # Comando de inicio con Gunicorn
-CMD ["/app/entrypoint.sh"]
+CMD ["sh", "/app/entrypoint.sh"]
