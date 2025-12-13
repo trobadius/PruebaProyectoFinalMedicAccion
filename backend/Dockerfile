@@ -34,8 +34,8 @@ RUN mkdir -p /app/mediaccion/static
 # --------------------------
 FROM python:3.13-slim
 
-# Crear usuario no root
-RUN useradd -m -r appuser && mkdir /app && chown -R appuser /app
+# Crear usuario no root con shell asignado
+RUN useradd -m -r -s /bin/bash appuser && mkdir /app && chown -R appuser /app
 
 # Variables de entorno para Python y Railway
 ENV PYTHONDONTWRITEBYTECODE=1 \
