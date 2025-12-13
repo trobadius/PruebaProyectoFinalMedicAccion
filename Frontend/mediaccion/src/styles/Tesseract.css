@@ -1,0 +1,100 @@
+/* CAMARA CSS */
+/*Se tiene que quitar no sirve*/
+:root{
+    --bg-color-custom: #f1f1f1;
+    --light-grey-custom: #CCC;
+    --medium-grey-custom: #666;
+    --dark-grey-custom: #4a768e;
+    --text-color-custom: #010101;
+    --border-radius-lg-custom: 30px;
+    --border-radius-sm-custom: 8px;
+}
+
+.tesseract-titulo{
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.camera-ocr-select {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: var(--border-radius-sm-custom);
+  border: 1px solid var(--medium-grey-custom);
+}
+
+.camera-ocr-video-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+}
+
+.camera-ocr-video {
+  width: 100%;
+  border-radius: var(--border-radius-sm-custom);
+}
+
+.camera-ocr-result {
+  white-space: pre-wrap;
+  padding: 10px;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.camera-ocr-canvas {
+  display: none;
+}
+
+/*div botones*/
+.modal-buttons{
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.camera-ocr-button-activate {
+  margin-top: 3rem;
+  width: 10vw;
+  padding: 10px 15px;
+  border-radius: 1rem;
+  border: none;
+  background-color: var(--dark-grey-custom);
+  color: white;
+  cursor: pointer;
+}
+
+.camera-ocr-button-activate:hover {
+  background-color: var(--medium-grey-custom);
+}
+
+.camera-ocr-button {
+  margin: 10px;
+  padding: 10px 15px;
+  border-radius: var(--border-radius-sm-custom);
+  border: none;
+  background-color: var(--dark-grey-custom);
+  color: white;
+  cursor: pointer;
+}
+
+.camera-ocr-button:hover {
+  background-color: var(--medium-grey-custom);
+}
+
+.overlay-img {
+  position: absolute; /* Posicionamiento sobre el video */
+  top: 0;             /* Ajusta según necesites */
+  left: 0;            /* Ajusta según necesites */
+  width: 100%;        /* O el tamaño que quieras */
+  height: 100%;       /* O el tamaño que quieras */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* Para que no bloquee clics */
+  margin-top: 30px;
+}
+
+.overlay-img img {
+  width: 250px;  /* Ajusta el tamaño de tu logo QR */
+  height: 200px;
+  object-fit: contain;
+}
