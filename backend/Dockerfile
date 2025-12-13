@@ -21,7 +21,7 @@ RUN pip install --upgrade pip
 
 # Copiar requisitos y construir dependencias
 COPY requeriments.txt .
-RUN pip install --user --no-cache-dir -r requeriments.txt
+RUN pip install --no-cache-dir -r requeriments.txt
 
 # Copiar código de la aplicación
 COPY . .
