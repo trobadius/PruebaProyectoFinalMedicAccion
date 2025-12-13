@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 # Cambiar al directorio de Django para asegurar que manage.py esté accesible
