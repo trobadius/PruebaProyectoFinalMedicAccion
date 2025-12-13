@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/ap
 
 # Copiar dependencias y código desde builder
 COPY --from=builder /root/.local /root/.local
-COPY --from=builder /app /app
+COPY --from=builder --chown=appuser:appuser /app /app
 
 # Cambiar a usuario no root
 USER appuser
