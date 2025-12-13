@@ -74,9 +74,5 @@ RUN python manage.py collectstatic --noinput --clear
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# Healthcheck opcional para Railway
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/api/', timeout=5)" || exit 1
-
-# Comando de inicio con Gunicorn
-CMD ["bash", "/app/entrypoint.sh"]
+# Comando de inicio: ejecutar migraciones, collectstatic y Gunicorn en un shell
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput --clear && exec gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 4 --threads 2 --worker-class gthread --worker-tmp-dir /dev/shm --access-logfile - --error-logfile - mediaccion.wsgi:application"]
