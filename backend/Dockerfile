@@ -1,7 +1,7 @@
 # Dockerfile Multi-stage optimizado para Railway
 
 # Etapa 1: Build
-FROM python:3.11-slim as builder
+FROM python:3.13-slim as builder
 
 WORKDIR /app
 
@@ -11,16 +11,16 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade pip
+
 # Copiar requisitos
 COPY requeriments.txt .
 
-RUN pip install --upgrade pip
-
 # Crear directorio para pip packages
-RUN pip install --user --no-cache-dir -r requeriments.txt
+RUN pip install --no-cache-dir -r requeriments.txt
 
 # Etapa 2: Runtime
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Variables de entorno para Python
 ENV PYTHONUNBUFFERED=1 \
