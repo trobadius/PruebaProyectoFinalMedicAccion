@@ -29,9 +29,6 @@ COPY . .
 # Crear directorio static para evitar la advertencia de STATICFILES_DIRS
 RUN mkdir -p /app/mediaccion/static
 
-# Recopilar archivos estáticos (opcional en builder, pero útil para verificar)
-RUN python manage.py collectstatic --noinput --clear
-
 # --------------------------
 # Stage 2: Runtime
 # --------------------------
