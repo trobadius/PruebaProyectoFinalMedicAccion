@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-# Cambiar al directorio de Django para asegurar que manage.py esté accesible
-cd /app/mediaccion
-
 echo "Ejecutando migraciones de base de datos..."
 python manage.py migrate --noinput
 
