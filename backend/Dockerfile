@@ -1,61 +1,72 @@
-# Dockerfile Multi-stage optimizado para Railway
-
-# Etapa 1: Build
-FROM python:3.13-slim as builder
+# --------------------------
+# Stage 1: Build dependencies
+# --------------------------
+FROM python:3.13-slim AS builder
 
 WORKDIR /app
 
-# Instalar dependencias del sistema necesarias para compilar psycopg2
+# Optimizar Python
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Instalar herramientas de compilación y PostgreSQL client
 RUN apt-get update && apt-get install -y \
     gcc \
+    libpq-dev \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
+# Actualizar pip
 RUN pip install --upgrade pip
 
-# Copiar requisitos
+# Copiar requisitos y construir dependencias
 COPY requeriments.txt .
+RUN pip install --user --no-cache-dir -r requeriments.txt
 
-# Crear directorio para pip packages
-RUN pip install --no-cache-dir -r requeriments.txt
+# Copiar código de la aplicación
+COPY . .
 
-# Etapa 2: Runtime
+# --------------------------
+# Stage 2: Runtime
+# --------------------------
 FROM python:3.13-slim
 
-# Variables de entorno para Python
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PATH=/root/.local/bin:$PATH \
-    PORT=8000
+# Crear usuario no root
+RUN useradd -m -r appuser && mkdir /app && chown -R appuser /app
+
+# Variables de entorno para Python y Railway
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=8000 \
+    PATH=/root/.local/bin:$PATH
 
 WORKDIR /app
 
-# Instalar solo dependencias de runtime
-RUN apt-get update && apt-get install -y \
-    postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+# Instalar solo dependencias necesarias en runtime
+RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
 
-# Copiar Python packages del builder
+# Copiar dependencias y código desde builder
 COPY --from=builder /root/.local /root/.local
+COPY --from=builder /app /app
 
-# Copiar el proyecto
-COPY . .
+# Cambiar a usuario no root
+USER appuser
 
 # Cambiar al directorio de Django
 WORKDIR /app/mediaccion
 
-# Crear directorios necesarios
+# Crear directorio de archivos estáticos
 RUN mkdir -p /app/mediaccion/staticfiles
 
 # Recopilar archivos estáticos
 RUN python manage.py collectstatic --noinput --clear
 
-# Exponer puerto
+# Exponer puerto de Railway
 EXPOSE $PORT
 
-# Health check
+# Healthcheck opcional para Railway
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8000/api/', timeout=5)" || exit 1
 
-# Comando de inicio
+# Comando de inicio con Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--threads", "2", "--worker-class", "gthread", "--worker-tmp-dir", "/dev/shm", "--access-logfile", "-", "--error-logfile", "-", "mediaccion.wsgi:application"]
