@@ -46,7 +46,10 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
 
 # Copiar dependencias y código desde builder
-COPY --from=builder /root/.local /root/.local
+COPY --from=builder /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
+COPY --from=builder /usr/local/bin/ /usr/local/bin/
+
+# Copiar código de la app como appuser
 COPY --from=builder --chown=appuser:appuser /app /app
 
 # Cambiar a usuario no root
