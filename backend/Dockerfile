@@ -14,6 +14,8 @@ RUN apt-get update && apt-get install -y \
 # Copiar requisitos
 COPY requeriments.txt .
 
+RUN pip install --upgrade pip
+
 # Crear directorio para pip packages
 RUN pip install --user --no-cache-dir -r requeriments.txt
 
