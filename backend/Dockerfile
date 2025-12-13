@@ -52,6 +52,10 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 # Copiar código de la app como appuser
 COPY --from=builder --chown=appuser:appuser /app /app
 
+# Copiar y configurar entrypoint.sh ANTES de cambiar a USER appuser
+COPY --chown=appuser:appuser entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
 # Cambiar a usuario no root
 USER appuser
 
@@ -72,4 +76,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD python -c "import requests; requests.get('http://localhost:8000/api/', timeout=5)" || exit 1
 
 # Comando de inicio con Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "4", "--threads", "2", "--worker-class", "gthread", "--worker-tmp-dir", "/dev/shm", "--access-logfile", "-", "--error-logfile", "-", "mediaccion.wsgi:application"]
+CMD ["/app/entrypoint.sh"]
