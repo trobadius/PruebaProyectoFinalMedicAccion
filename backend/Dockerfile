@@ -71,5 +71,5 @@ RUN python manage.py collectstatic --noinput --clear
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# Usar ENTRYPOINT para ejecutar el script de inicio
-ENTRYPOINT ["/app/start.sh"]
+# Comando de inicio: cambiar directorio y ejecutar comandos
+CMD ["sh", "-c", "cd /app/mediaccion && python manage.py migrate --noinput && python manage.py collectstatic --noinput --clear && exec gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 4 --threads 2 --worker-class gthread --worker-tmp-dir /dev/shm --access-logfile - --error-logfile - mediaccion.wsgi:application"]
