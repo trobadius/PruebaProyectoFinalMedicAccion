@@ -52,17 +52,10 @@ RUN apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/ap
 COPY --from=builder /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
-# Copiar código de la app como appuser
-COPY --from=builder --chown=appuser:appuser /app /app
+# Copiar código de la app
+COPY --from=builder /app /app
 
-# Copiar y configurar entrypoint.sh ANTES de cambiar a USER appuser
-COPY --chown=appuser:appuser entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-
-# Cambiar a usuario no root
-USER appuser
-
-# Cambiar al directorio de Django
+# Cambiar al directorio de Django ANTES de USER
 WORKDIR /app/mediaccion
 
 # Crear directorio de archivos estáticos
@@ -74,7 +67,6 @@ RUN python manage.py collectstatic --noinput --clear
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-
-# CMD final solo Gunicorn
-CMD ["/entrypoint.sh"]
+# Comando de inicio simple sin shell ni cd
+CMD ["gunicorn", "--bind", "0.0.0.0:${PORT:-8000}", "--workers", "4", "--threads", "2", "--worker-class", "gthread", "--worker-tmp-dir", "/dev/shm", "--access-logfile", "-", "--error-logfile", "-", "mediaccion.wsgi:application"]
 
