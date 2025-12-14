@@ -4,6 +4,6 @@
     "builder": "dockerfile"
   },
   "deploy": {
-    "startCommand": "cd mediaccion && python manage.py migrate && gunicorn --bind 0.0.0.0:$PORT --workers 4 mediaccion.wsgi:application"
+    "startCommand": "/bin/sh/env /app/entrypoint.sh"
   }
 }

@@ -61,12 +61,8 @@ WORKDIR /app/mediaccion
 # Crear directorio de archivos estáticos
 RUN mkdir -p staticfiles
 
-# Recopilar archivos estáticos
-RUN python manage.py collectstatic --noinput --clear
-
 # Exponer puerto de Railway
 EXPOSE $PORT
 
 # Comando de inicio simple sin shell ni cd
-CMD ["gunicorn", "--bind", "0.0.0.0:${PORT:-8000}", "--workers", "4", "--threads", "2", "--worker-class", "gthread", "--worker-tmp-dir", "/dev/shm", "--access-logfile", "-", "--error-logfile", "-", "mediaccion.wsgi:application"]
-
+ENTRYPOINT ["/bin/sh/env", "/app/entrypoint.sh"]

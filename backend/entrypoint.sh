@@ -1,11 +1,11 @@
 #!/usr/bin/env sh
 set -e
 
-echo "Ejecutando migraciones de base de datos..."
-python manage.py migrate --noinput
-
 echo "Recopilando archivos estáticos..."
 python manage.py collectstatic --noinput --clear
+
+echo "Ejecutando migraciones de base de datos..."
+python manage.py migrate --noinput
 
 echo "Iniciando aplicación..."
 exec gunicorn --bind 0.0.0.0:${PORT:-8000} \
