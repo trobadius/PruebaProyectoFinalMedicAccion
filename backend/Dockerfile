@@ -74,10 +74,6 @@ RUN python manage.py collectstatic --noinput --clear
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# WORKDIR ya está en /app/mediaccion
-RUN python manage.py migrate --noinput
-RUN python manage.py collectstatic --noinput --clear
-
 # CMD final solo Gunicorn
 CMD ["sh", "/app/entrypoint.sh"]
 
