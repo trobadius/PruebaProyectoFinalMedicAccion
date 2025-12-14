@@ -138,7 +138,7 @@ export default function Registration() {
     e.preventDefault();    setLoading(true);
     console.log(formData);
     try {
-      await api.post("/api/users/crear", formData);
+      await api.post("/api/users/crear/", formData);
 
       alert("Registro completado con éxito 🩺");
       navigate("/login");

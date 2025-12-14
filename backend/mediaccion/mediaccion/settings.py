@@ -22,8 +22,8 @@ DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.railway.app",
-    "https://*.vercel.app",
+    "https://pruebaproyectofinalmedicaccion-production.up.railway.app/",
+    "https://prueba-proyecto-final-medic-accion-sigma.vercel.app/",
 ]
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
