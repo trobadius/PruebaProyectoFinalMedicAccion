@@ -65,4 +65,13 @@ RUN mkdir -p staticfiles
 EXPOSE $PORT
 
 # Comando de inicio simple sin shell ni cd
-ENTRYPOINT ["/bin/sh/env", "/app/entrypoint.sh"]
+CMD [
+  "gunicorn",
+  "mediaccion.wsgi:application",
+  "--bind", "0.0.0.0:8000",
+  "--workers", "3",
+  "--threads", "2",
+  "--worker-class", "gthread",
+  "--access-logfile", "-",
+  "--error-logfile", "-"
+]
