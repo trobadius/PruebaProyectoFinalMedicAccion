@@ -64,5 +64,12 @@ RUN mkdir -p staticfiles
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# Comando de inicio simple sin shell ni cd
-CMD ["gunicorn", "mediaccion.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--threads", "2", "--worker-class", "gthread", "--access-logfile", "-", "--error-logfile", "-"]
+# Copiar el entrypoint antes de cambiar a USER
+COPY --chown=appuser:appuser entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Cambiar a usuario no root
+USER appuser
+
+# CMD con entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
