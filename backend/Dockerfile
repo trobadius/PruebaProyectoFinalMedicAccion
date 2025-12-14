@@ -65,11 +65,11 @@ RUN mkdir -p staticfiles
 EXPOSE $PORT
 
 # Copiar el entrypoint antes de cambiar a USER
-COPY --chown=appuser:appuser entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY --chown=appuser:appuser entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Cambiar a usuario no root
 USER appuser
 
 # CMD con entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
