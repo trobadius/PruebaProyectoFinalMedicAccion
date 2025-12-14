@@ -68,11 +68,13 @@ WORKDIR /app/mediaccion
 # Crear directorio de archivos estáticos
 RUN mkdir -p staticfiles
 
+# Recopilar archivos estáticos (durante build)
+RUN python manage.py collectstatic --noinput --clear
+
+
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# CMD final solo Gunicorn
-CMD gunicorn --bind 0.0.0.0:8000 --workers 4 --threads 2 \
-    --worker-class gthread --worker-tmp-dir /dev/shm \
-    --access-logfile - --error-logfile - mediaccion.wsgi:application
+# Comando de inicio: ejecutar migraciones, collectstatic y Gunicorn en un shell
+CMD ["sh", "-c", "python manage.py migrate --noinput && python manage.py collectstatic --noinput --clear && exec gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 4 --threads 2 --worker-class gthread --worker-tmp-dir /dev/shm --access-logfile - --error-logfile - mediaccion.wsgi:application"]
 
