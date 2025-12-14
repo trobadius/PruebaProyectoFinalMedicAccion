@@ -71,6 +71,6 @@ RUN mkdir -p staticfiles
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# Usar ENTRYPOINT en shell form para Railway
-ENTRYPOINT ["/bin/sh", "/app/entrypoint.sh"]
+# Ejecutar Gunicorn directamente, sin shell ni scripts
+CMD ["gunicorn", "mediaccion.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4", "--threads", "2", "--worker-class", "gthread", "--worker-tmp-dir", "/dev/shm", "--access-logfile", "-", "--error-logfile", "-"]
 
