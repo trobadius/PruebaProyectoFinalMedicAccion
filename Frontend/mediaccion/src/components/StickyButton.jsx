@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import '../styles/Stickybutton.css';
+import '../styles/StickyButton.css';
 import { House, CalendarDays, Camera, Trophy, UserRound } from 'lucide-react';
 
 export default function StickyButton() {
