@@ -79,7 +79,5 @@ RUN python manage.py migrate --noinput
 RUN python manage.py collectstatic --noinput --clear
 
 # CMD final solo Gunicorn
-CMD gunicorn --bind 0.0.0.0:8000 --workers 4 --threads 2 \
-    --worker-class gthread --worker-tmp-dir /dev/shm \
-    --access-logfile - --error-logfile - mediaccion.wsgi:application
+CMD ["sh", "/app/entrypoint.sh"]
 
