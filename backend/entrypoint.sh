@@ -1,18 +1,7 @@
-#!/usr/bin/env sh
-set -e
+#!/bin/bash
 
-echo "Ejecutando migraciones de base de datos..."
-python manage.py migrate --noinput
+# Check if PORT is set, otherwise default to 8000
+PORT=${PORT:-8000}
 
-echo "Recopilando archivos estáticos..."
-python manage.py collectstatic --noinput --clear
-
-echo "Iniciando aplicación..."
-exec gunicorn --bind 0.0.0.0:${PORT:-8000} \
-    --workers 4 \
-    --threads 2 \
-    --worker-class gthread \
-    --worker-tmp-dir /dev/shm \
-    --access-logfile - \
-    --error-logfile - \
-    mediaccion.wsgi:application
+# Start Gunicorn
+gunicorn --bind :$PORT --workers 4 project.wsgi

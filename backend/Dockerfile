@@ -71,5 +71,4 @@ RUN python manage.py collectstatic --noinput --clear
 # Exponer puerto de Railway
 EXPOSE $PORT
 
-# Usar ENTRYPOINT para ejecutar el script de inicio
-ENTRYPOINT ["/app/start.sh"]
+CMD ["/entrypoint.sh"]
