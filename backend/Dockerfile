@@ -55,11 +55,12 @@ COPY --from=builder /usr/local/bin/ /usr/local/bin/
 # Copiar código de la app
 COPY --from=builder /app /app
 
+# Crear directorios para static y media con permisos correctos
+RUN mkdir -p /app/mediaccion/staticfiles /app/mediaccion/media \
+    && chown -R appuser:appuser /app/mediaccion/staticfiles /app/mediaccion/media
+
 # Cambiar al directorio de Django ANTES de USER
 WORKDIR /app/mediaccion
-
-# Crear directorio de archivos estáticos
-RUN mkdir -p staticfiles
 
 # Exponer puerto de Railway
 EXPOSE $PORT
