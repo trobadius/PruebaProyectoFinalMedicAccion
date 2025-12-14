@@ -1,5 +1,5 @@
-# entrypoint.sh
 #!/usr/bin/env sh
+
 set -e
 
 echo "Recopilando archivos estáticos..."
