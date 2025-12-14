@@ -66,11 +66,18 @@ USER appuser
 WORKDIR /app/mediaccion
 
 # Crear directorio de archivos estáticos
-RUN mkdir -p /app/mediaccion/staticfiles
+RUN mkdir -p staticfiles
 
 # Exponer puerto de Railway
 EXPOSE $PORT
 
 # CMD final solo Gunicorn
-CMD sh -c "/app/entrypoint.sh"
+CMD gunicorn --bind 0.0.0.0:8000 \
+    --workers 4 \
+    --threads 2 \
+    --worker-class gthread \
+    --worker-tmp-dir /dev/shm \
+    --access-logfile - \
+    --error-logfile - \
+    mediaccion.wsgi:application
 
