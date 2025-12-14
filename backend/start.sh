@@ -1,8 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env sh
 set -e
-
-# Cambiar al directorio de Django
-cd /app/mediaccion
 
 # Ejecutar migraciones
 echo "Ejecutando migraciones..."
