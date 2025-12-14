@@ -73,4 +73,4 @@ RUN chmod +x /app/entrypoint.sh
 USER appuser
 
 # CMD con entrypoint
-ENTRYPOINT ["/app/entrypoint.sh"]
+ENTRYPOINT ["sh","/app/entrypoint.sh"]
